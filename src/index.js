@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const apiRouter = require("./routes");
 const { PORT } = require("./config/server.config");
 const errorHandler = require("./utils/errorHandler");
+const connectToDB = require('./config/db.config');
+const mongoose = require('mongoose')
 const app = express();
 
 app.use(bodyParser.json());
@@ -17,6 +19,12 @@ app.get("/ping", (req, res) => {
   return res.json({ message: "Problem Service is alive" });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async() => {
   console.log(`Server started at PORT: ${PORT}`);
+  await connectToDB();
+  /**Testing is mongoDB connection by Adding Dummy Data */
+  // const Cat = mongoose.model('Cat', { name: String });
+  //        const kitty = new Cat({ name: 'Zildjian' });
+  //        kitty.save().then(() => console.log('meow'));
+  console.log("Successfully connected to db");
 });
