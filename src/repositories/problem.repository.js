@@ -1,3 +1,4 @@
+const NotFound = require('../errors/notFound.error');
 const {Problem} = require('../models');
 
 class ProblemRepository {
@@ -24,6 +25,20 @@ class ProblemRepository {
             throw error;
         }
     }
+    async getProblem(id) {
+        try {
+            const problem = await Problem.findById(id);
+            console.log("problem",problem);
+            if(!problem) {
+                throw new NotFound("Problem", id);
+            }
+            return problem;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+    
 
 }
 module.exports = ProblemRepository;
